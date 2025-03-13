@@ -30,6 +30,7 @@ app.use('/api/home', homepageRoutes);
 app.use('/api/budget', budgetRoutes);
 app.use('/api/expense', expenseRoutes);
 
+
 //connect to mongodb
 mongoose.connect(process.env.MONGO_URI) //this is async so returns a promise
     .then(() => { //fires a callback when the promise is resolved

@@ -11,6 +11,30 @@ const getExpenses = async (req, res) => {
     }
 };
 
+const getRecentExpenses = async (req, res) => {
+    try {
+        const expenses = await Expense.find({}).sort({date: -1}).limit(5); // -1 bc descending order
+        res.status(200).json(expenses);
+    } catch (error) {
+        res.status(400).json({message: error.message});
+    }
+};
+
+const downloadExpenses = async (req, res) => {
+    try {
+        const expenses = await Expense.find({}).sort({date: -1}); // -1 bc descending order
+        let csv = 'title,amount,date,category\n';
+        expenses.forEach(expense => {
+            csv += `${expense.title},${expense.amount},${expense.date},${expense.category}\n`;
+        });
+        res.setHeader('Content-Type', 'text/csv');
+        res.setHeader('Content-Disposition', 'attachment; filename=expenses.csv');
+        res.status(200).send(csv);
+    } catch (error) {
+        res.status(400).json({message: error.message});
+    }
+}
+
 const getExpense = async (req, res) => {
     const {id} = req.params;
 
@@ -80,6 +104,8 @@ const deleteExpense = async (req, res) => {
 
 module.exports = {
     getExpenses,
+    getRecentExpenses,
+    downloadExpenses,
     getExpense,
     createExpense,
     deleteExpense
