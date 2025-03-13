@@ -4,8 +4,14 @@ require('dotenv').config();
 //import express
 const express = require('express');
 
-//import workout routes
+//import mongoose
+const mongoose = require('mongoose');
+
+//import routes
 const homepageRoutes = require('./routes/homepage');
+const budgetRoutes = require('./routes/budget/budget');
+const expenseRoutes = require('./routes/budget/expense');
+
 
 //start express app
 const app = express();
@@ -21,11 +27,22 @@ app.use((req, res, next) => {
 
 //use routes
 app.use('/api/home', homepageRoutes);
+app.use('/api/budget', budgetRoutes);
+app.use('/api/expense', expenseRoutes);
 
-//listen for requests
-app.listen(process.env.PORT, () => { //we only want to listen to requests after we have connected to the db
-    console.log('connected to db and listening on port 1111 :)');
-})
+//connect to mongodb
+mongoose.connect(process.env.MONGO_URI) //this is async so returns a promise
+    .then(() => { //fires a callback when the promise is resolved
+
+        //listen for requests
+        app.listen(process.env.PORT, () => { //we only want to listen to requests after we have connected to the db
+            console.log('connected to db and listening on port 1111');
+        })
+
+    }) 
+    .catch((error) => {
+        console.log(error)
+    })
 
 
 
