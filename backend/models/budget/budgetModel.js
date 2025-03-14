@@ -3,6 +3,10 @@ const Schema = mongoose.Schema;
 
 
 const budgetSchema = new Schema({
+    month: {
+        type: String,
+        required: true
+    }, 
     categories: {
         type: [{
             name: {

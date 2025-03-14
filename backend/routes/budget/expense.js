@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { 
     getExpenses,
-    getRecentExpenses,
+    getDashboardInfo,
     downloadExpenses,
     getExpense,
     createExpense,
@@ -10,7 +10,7 @@ const {
 } = require('../../controllers/budget/expenseController');
 
 router.get('/', getExpenses);
-router.get('/recent/', getRecentExpenses);
+router.get('/dashboard/', getDashboardInfo);
 router.get('/download/', downloadExpenses);
 router.get('/:id', getExpense);
 router.post('/', createExpense);
